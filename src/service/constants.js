@@ -1,0 +1,5 @@
+export const ALL_USERS_API_DATA='ALL_USERS_API_DATA'
+export const LOGIN='LOGIN'
+export const LOGOUT='LOGOUT'
+export const FETCH_REQUEST='FETCH_REQUEST'
+export const FETCH_FAILURE='FETCH_FAILURE'
