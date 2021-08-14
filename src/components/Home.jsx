@@ -85,7 +85,7 @@ return(<>
          </>
           :
           <>
-         <NavLink to={`/listAll`} style={{ textDecoration: 'none',color:"white"}}><Button color="inherit">List All</Button></NavLink>
+            {props.data.apilogin[0].userRole===1?<NavLink to={`/listAll`} style={{ textDecoration: 'none',color:"white"}}><Button color="inherit">List All</Button></NavLink>:""}
          <NavLink to={`/table`} style={{ textDecoration: 'none',color:"white"}}><Button color="inherit">Table</Button></NavLink>      
 
        {/*THis is icon button*/}

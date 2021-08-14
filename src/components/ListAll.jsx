@@ -31,23 +31,25 @@ let [offset,setOffset]=useState(0);
 let [thead,setThead]=useState(['ID','Name','LastName','Email','Gender','DOB','Education','Employment','Maritial Status','Vansh,Gotra']);
 
 
-useEffect(()=>{
+const loadData=(pg,lmt)=>{
 
-
-const loadData=async()=>{
-
-await dispatch(fetchData(pageNumber,limit))
-
-loadData()
+dispatch(fetchData(pg,lmt));
+setPageNumber(pg);
 }
 
-},[dispatch,pageNumber,limit]);
+useEffect(()=>{
+
+loadData(pageNumber,limit);
+
+},[pageNumber,limit]);
 
 
 const classes=useStyles();
 
 
+//console.log(`THis is render of List ALl`);
 
+if(props.data.apidata[0].results){
 
 if(props.data.apidata[0].isLoading===true)
 {
@@ -61,6 +63,7 @@ return(
 
 }else{
 
+console.log(props.data.apidata[0]);
 return(<>
     <Container maxWidth="lg" style={{height: '100vh' }} >
       <Box component="h1" m={1} style={{textAlign:'center'}}>KD</Box>
@@ -104,7 +107,7 @@ return(<>
       </TableContainer>
 
 	<div style={{display:"flex",flexDirection:"row",justifyContent:"center",margin:"10px"}}>
-	     {<Pagination count={Math.ceil(props.data.apidata[0].count/limit)} size="large" onChange={(event,page)=>(dispatch(fetchData(page,limit)),setPageNumber(page))} page={pageNumber} variant="outlined" />}
+	     {<Pagination count={Math.ceil(props.data.apidata[0].count/limit)} size="large" onChange={(event,page)=>(loadData(page,limit))} page={pageNumber} variant="outlined" />}
 	</div>			
     </Container>
 
@@ -120,7 +123,10 @@ return(<>
 }
 
 
-
+}else
+{
+return(<><Redirect to="/profile" /></>)
+}
 
 
 }

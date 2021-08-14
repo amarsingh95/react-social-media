@@ -5,23 +5,7 @@ import {FETCH_REQUEST} from '../constants'
 import {FETCH_FAILURE} from '../constants'
 
 
-export const fetchData=(pageParam,limitParam)=>{
 
-   return function(dispatch)
-   {
-    dispatch(beforeData({"isLoadging":true})) 
-    fetch('http://localhost:4000/members/showAll',{
-    method:'POST',
-    credentials: 'include',
-    headers:{
-    'Content-Type': 'application/json'
-    },
-    body:JSON.stringify({page:pageParam,limit:limitParam})
-    }).then(d=>d.json()).then((resp)=>{dispatch(setData(resp));}).catch((err)=>{console.log(err);dispatch(failureData({"err":err.message}))});	
-
-   }
-
-}
 
 
 //Before Data is Loading
@@ -62,11 +46,12 @@ payload:data
 const failureData=(data=null)=>
 {
 if(data){
-return {
-payload:data,
-type: FETCH_FAILURE
-};
-}
+
+   return {
+           type: FETCH_FAILURE,
+           payload:data,
+          };
+   }
 }
 
 
@@ -133,4 +118,24 @@ payload:data
 
 }
 
+
+export const fetchData=(pageParam,limitParam)=>{
+
+const errData='Invalid Credentials';
+
+   return function(dispatch)
+   {
+    dispatch(beforeData({"isLoadging":true})) 
+    fetch('http://localhost:4000/members/showAll',{
+    method:'POST',
+    credentials: 'include',
+    headers:{
+    'Content-Type': 'application/json'
+    },
+    body:JSON.stringify({page:pageParam,limit:limitParam})
+    }).then((d)=>{if(d.status!==200){dispatch(failureData(errData));return}else{return d.json();}}).then((resp)=>{dispatch(setData(resp));}).catch((err)=>{/*console.log(err)*/});	
+
+   }
+
+}
 
